@@ -44,6 +44,20 @@ bool HondaGenDLCComponent::needs_query_ecu_info2() {
   return false;
 }
 
+bool HondaGenDLCComponent::needs_query_inverter_master() {
+  if (this->inv_master_current_ != nullptr)
+    return true;
+  if (this->inv_master_temperature_ != nullptr)
+    return true;
+  if (this->inv_master_eco_ != nullptr)
+    return true;
+  if (this->inv_master_power_ != nullptr)
+    return true;
+  if (this->inv_master_volts_ != nullptr)
+    return true;
+  return false;
+}
+
 void HondaGenDLCComponent::setup() {
   this->query_active_ = false;
 
@@ -54,6 +68,9 @@ void HondaGenDLCComponent::setup() {
   }
   if (this->needs_query_ecu_info2()) {
     this->query_array_[i++] = QueryType::T_ECU_Info2;
+  }
+  if (this->needs_query_inverter_master()) {
+    this->query_array_[i++] = QueryType::T_INV_Master;
   }
 
   this->query_array_len_ = i;
@@ -137,6 +154,25 @@ void HondaGenDLCComponent::update_ecu_info2_sensors() {
   }
 }
 
+void HondaGenDLCComponent::update_inverter_master_sensors() {
+  if (this->inv_master_current_ != nullptr) {
+    this->inv_master_current_->publish_state(this->inv_master_.amperage * 0.1);
+  }
+  if (this->inv_master_temperature_ != nullptr) {
+    this->inv_master_temperature_->publish_state(this->inv_master_.temperature);
+  }
+  if (this->inv_master_eco_ != nullptr) {
+    bool eco = this->inv_master_.mode == 2;
+    this->inv_master_eco_->publish_state(eco);
+  }
+  if (this->inv_master_power_ != nullptr) {
+    this->inv_master_power_->publish_state(this->inv_master_.watts);
+  }
+  if (this->inv_master_volts_ != nullptr) {
+    this->inv_master_volts_->publish_state(this->inv_master_.voltage);
+  }
+}
+
 void HondaGenDLCComponent::loop() {
   QueryType query_type;
 
@@ -161,6 +197,7 @@ void HondaGenDLCComponent::loop() {
               this->update_ecu_info2_sensors();
               break;
             case QueryType::T_INV_Master:
+              this->update_inverter_master_sensors();
               break;
             case QueryType::T_INV_Slave:
               break;
