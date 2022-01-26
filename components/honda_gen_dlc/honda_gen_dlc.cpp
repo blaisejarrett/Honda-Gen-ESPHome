@@ -58,6 +58,19 @@ bool HondaGenDLCComponent::needs_query_inverter_master() {
   return false;
 }
 
+bool HondaGenDLCComponent::needs_query_inverter_slave() {
+  if (this->inv_slave_current_ != nullptr) {
+    return true;
+  }
+  if (this->inv_slave_temperature_ != nullptr) {
+    return true;
+  }
+  if (this->inv_slave_power_ != nullptr) {
+    return true;
+  }
+  return false;
+}
+
 void HondaGenDLCComponent::setup() {
   this->query_active_ = false;
 
@@ -71,6 +84,9 @@ void HondaGenDLCComponent::setup() {
   }
   if (this->needs_query_inverter_master()) {
     this->query_array_[i++] = QueryType::T_INV_Master;
+  }
+  if (this->needs_query_inverter_slave()) {
+    this->query_array_[i++] = QueryType::T_INV_Slave;
   }
 
   this->query_array_len_ = i;
@@ -173,6 +189,18 @@ void HondaGenDLCComponent::update_inverter_master_sensors() {
   }
 }
 
+void HondaGenDLCComponent::update_inverter_slave_sensors() {
+  if (this->inv_slave_current_ != nullptr) {
+    this->inv_slave_current_->publish_state(this->inv_slave_.amperage * 0.1);
+  }
+  if (this->inv_slave_temperature_ != nullptr) {
+    this->inv_slave_temperature_->publish_state(this->inv_slave_.temperature);
+  }
+  if (this->inv_slave_power_ != nullptr) {
+    this->inv_slave_power_->publish_state(this->inv_slave_.watts);
+  }
+}
+
 void HondaGenDLCComponent::loop() {
   QueryType query_type;
 
@@ -200,6 +228,7 @@ void HondaGenDLCComponent::loop() {
               this->update_inverter_master_sensors();
               break;
             case QueryType::T_INV_Slave:
+              this->update_inverter_slave_sensors();
               break;
             default:
               break;

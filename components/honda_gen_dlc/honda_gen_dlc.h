@@ -92,6 +92,18 @@ class HondaGenDLCComponent : public PollingComponent, public uart::UARTDevice {
     this->inv_master_volts_ = inv_master_volts;
   }
 
+  void set_inv_slave_current(sensor::Sensor *inv_slave_current) {
+    this->inv_slave_current_ = inv_slave_current;
+  }
+
+  void set_inv_slave_temperature(sensor::Sensor *inv_slave_temperature) {
+    this->inv_slave_temperature_ = inv_slave_temperature;
+  }
+
+  void set_inv_slave_power(sensor::Sensor *inv_slave_power) {
+    this->inv_slave_power_ = inv_slave_power;
+  }
+
  protected:
   binary_sensor::BinarySensor *power_switch_sensor_{nullptr};
   // ECU Info1
@@ -114,6 +126,10 @@ class HondaGenDLCComponent : public PollingComponent, public uart::UARTDevice {
   binary_sensor::BinarySensor *inv_master_eco_{nullptr};
   sensor::Sensor *inv_master_power_{nullptr};
   sensor::Sensor *inv_master_volts_{nullptr};
+  // Inverter Slave
+  sensor::Sensor *inv_slave_current_{nullptr};
+  sensor::Sensor *inv_slave_temperature_{nullptr};
+  sensor::Sensor *inv_slave_power_{nullptr};
   
   uint8_t rx_buffer_[RX_BUFF_SIZE];
   size_t rx_index_;
@@ -133,9 +149,11 @@ class HondaGenDLCComponent : public PollingComponent, public uart::UARTDevice {
   bool needs_query_ecu_info1();
   bool needs_query_ecu_info2();
   bool needs_query_inverter_master();
+  bool needs_query_inverter_slave();
   void update_ecu_info1_sensors();
   void update_ecu_info2_sensors();
   void update_inverter_master_sensors();
+  void update_inverter_slave_sensors();
 
   void start_queries();
   void next_query();
