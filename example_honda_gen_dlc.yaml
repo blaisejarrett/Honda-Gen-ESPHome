@@ -68,7 +68,7 @@ uart:
 honda_gen_dlc:
   # if the power is off it won't bother attempting to query sensor values.
   power_switch: power_sw_sensor
-  
+
   battery_voltage:
     name: "${upper_devicename} Battery Voltage"
   engine_rpm:
@@ -81,7 +81,7 @@ honda_gen_dlc:
     name: "${upper_devicename} Engine Spark Timing"
   output_voltage:
     name: "${upper_devicename} Output Voltage"
-    
+
   barometric_pressure:
     name: "${upper_devicename} Barometric Pressure"
   fuel_injection_time:
@@ -94,7 +94,22 @@ honda_gen_dlc:
     name: "${upper_devicename} Starter Count"
   o2_sensor:
     name: "${upper_devicename} O2 Sensor"
-  
-  
-  
+
+  inv_master_current:
+    name: "${upper_devicename} Master Inv Current"
+  inv_master_temperature:
+    name: "${upper_devicename} Master Inv Temperature"
+  inv_master_eco:
+    name: "${upper_devicename} Eco Mode"
+  inv_master_power:
+    name: "${upper_devicename} Master Inv Power"
+  inv_master_volts:
+    name: "${upper_devicename} Master Inv Voltage"
+
+  inv_slave_current:
+    name: "${upper_devicename} Slave Inv Current"
+  inv_slave_temperature:
+    name: "${upper_devicename} Slave Inv Temperature"
+  inv_slave_power:
+    name: "${upper_devicename} Slave Inv Power"
 

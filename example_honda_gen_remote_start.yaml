@@ -1,0 +1,72 @@
+substitutions:
+  devicename: "generator"
+  upper_devicename: "Generator"
+  run_pin: "16"
+  stop_pin: "17"
+  start_pin: "21"
+  sw_pin: "22"
+  dlc_tx_pin: "18"
+  dlc_rx_pin: "19"
+
+external_components:
+  - source: github://blaisejarrett/Honda-Gen-ESPHome@main
+    components: [ honda_gen_remote_start ]
+
+
+esphome:
+  name: ${devicename}
+
+esp32:
+  board: esp-wrover-kit
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "fillthisin"
+
+wifi:
+  ssid: "fillthisin"
+  password: "fillthisin"
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Generator Fallback Hotspot"
+    password: "generator"
+
+captive_portal:
+
+web_server:
+
+binary_sensor:
+  - platform: gpio
+    pin: ${run_pin}
+    name: "${upper_devicename} Running Light"
+    id: "run_sensor"
+  - platform: gpio
+    pin: ${sw_pin}
+    name: "${upper_devicename} Power Sw Enabled"
+    id: "power_sw_sensor"
+
+output:
+  - platform: gpio
+    pin: ${start_pin}
+    id: "start_button"
+  - platform: gpio
+    pin: ${stop_pin}
+    id: "stop_relay"
+
+switch:
+  - platform: honda_gen_remote_start
+    name: "${upper_devicename} Remote Start"
+    # This one's optional. If you provide it then it won't
+    # allow start attempts if the power switch is off.
+    power_sw_input: power_sw_sensor
+    # The following are required.
+    run_input: run_sensor
+    start_output: start_button
+    stop_output: stop_relay
