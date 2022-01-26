@@ -10,7 +10,7 @@ substitutions:
 
 external_components:
   - source: github://blaisejarrett/Honda-Gen-ESPHome@main
-    components: [ honda_gen_dlc ]
+    components: [ honda_gen_dlc, honda_gen_remote_start ]
 
 
 esphome:
