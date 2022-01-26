@@ -6,7 +6,7 @@ This project provides two Integrations. They can be used separately or together.
 
 ## Remote Start
 
-![Start Switch](docs/images/remote_start_switch.PNG)
+![Start Switch](docs/images/remote_start_switch.PNG?raw=true)
 
 Provides a Home Assistant Switch which implements remote start logic.
 This essentially emulates pushing the Gen start button temporarily and
@@ -70,7 +70,7 @@ You can read the ECU's sensor values via a UART bus.
 
 This integration implements a UART device which provides a number of sensors.
 
-![HA Screenshot](docs/images/ha_complete.png)
+![HA Screenshot](docs/images/ha_complete.png?raw=true)
 
 Some of the more useful ones:
 * Power Output
