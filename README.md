@@ -1,18 +1,18 @@
 # Honda-Gen-ESPHome
-Honda EU7000is Generator ESPHome Integration.
+Honda EU7000is Generator [ESPHome](https://esphome.io/) Integration.
+
+It enables Remote Start and extensive sensor monitoring on the
+Fuel Injected Honda EU7000is over wifi.
 
 This project provides two Integrations. They can be used separately or together.
 
+![EU7000is](docs/images/EU7000is_16HPE_03.png?raw=true)
 
 ## Remote Start
 
 ![Start Switch](docs/images/remote_start_switch.PNG?raw=true)
 
 Provides a Home Assistant Switch which implements remote start logic.
-This essentially emulates pushing the Gen start button temporarily and
-then monitors if it started successfully. Likewise disabling the switch
-emulates turning off the Gen's power switch until the generator stops. Once
-it has stopped it turns the power back on.
 
 You must provide 3 GPIO inputs for this to work:
 * (Input) Engine running
@@ -27,7 +27,7 @@ if the engine power switch is off.
 
 
 **Example GPIO configurations**:
-```
+```yaml
 binary_sensor:
   - platform: gpio
     pin: ${run_pin}
@@ -49,7 +49,7 @@ output:
 
 **Example Remote Start Switch Configuration**
 
-```
+```yaml
 switch:
   - platform: honda_gen_remote_start
     name: "${upper_devicename} Remote Start"
@@ -85,14 +85,14 @@ To use this you must provide a UART interface. There are some hardware considera
 I recommend you checkout this PCB project and schematic (TODO: Insert LINK) here.
 
 **Implement a UART interface:**
-```
+```yaml
 uart:
   rx_pin: ${dlc_rx_pin}
   tx_pin: ${dlc_tx_pin}
   baud_rate: 9600
 ```
 **Example Configuration**
-```
+```yaml
 honda_gen_dlc:
   # if the power is off it won't bother attempting to query sensor values.
   power_switch: power_sw_sensor
@@ -157,7 +157,7 @@ which [includes both integrations](example_honda_gen_complete.yaml).
 
 You can use install these integrations just by adding the following to your
 esphome project's yaml.
-```
+```yaml
 external_components:
   - source: github://blaisejarrett/Honda-Gen-ESPHome@main
     components: [ honda_gen_dlc, honda_gen_remote_start ]
