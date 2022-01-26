@@ -9,10 +9,11 @@ namespace esphome {
 namespace honda_gen_remote_start {
 
 
-class HondaGenRemoteStartComponent : public Component, public switch_::Switch {
+class HondaGenRemoteStartComponent : public PollingComponent, public switch_::Switch {
   public:
     void setup() override;
     void loop() override;
+    void update() override;
 
     void write_state(bool state) override;
 
@@ -36,6 +37,16 @@ class HondaGenRemoteStartComponent : public Component, public switch_::Switch {
     binary_sensor::BinarySensor *run_sensor_{nullptr};
     output::BinaryOutput *start_output_{nullptr};
     output::BinaryOutput *stop_output_{nullptr};
+    uint32_t start_t_;
+    bool starting_;
+    bool start_button_down_;
+    uint32_t stopping_t_;
+    bool stopping_;
+
+    void start_gen();
+    void stop_gen();
+    bool running();
+    bool can_start();
 };
 
 

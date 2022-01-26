@@ -9,7 +9,7 @@ CONF_START_OUTPUT = 'start_output'
 CONF_STOP_OUTPUT = 'stop_output'
 
 gen_ns = cg.esphome_ns.namespace("honda_gen_remote_start")
-GENComponent = gen_ns.class_("HondaGenRemoteStartComponent", cg.Component, switch.Switch)
+GENComponent = gen_ns.class_("HondaGenRemoteStartComponent", cg.PollingComponent, switch.Switch)
 
 CONFIG_SCHEMA = cv.All(
     switch.SWITCH_SCHEMA.extend(
@@ -21,13 +21,11 @@ CONFIG_SCHEMA = cv.All(
             cv.Required(CONF_STOP_OUTPUT): cv.use_id(output.BinaryOutput),
         }
     )
-    .extend(cv.COMPONENT_SCHEMA)
+    .extend(cv.polling_component_schema("2s"))
 )
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
-    await switch.register_switch(var, config)
 
     if CONF_POWER_SW_INPUT in config:
         sw = await cg.get_variable(config[CONF_POWER_SW_INPUT])
@@ -41,4 +39,7 @@ async def to_code(config):
 
     bin_out = await cg.get_variable(config[CONF_STOP_OUTPUT])
     cg.add(var.set_stop_output(bin_out))
+
+    await cg.register_component(var, config)
+    await switch.register_switch(var, config)
 

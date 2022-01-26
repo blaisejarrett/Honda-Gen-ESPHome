@@ -1,5 +1,6 @@
 #include "honda_gen_dlc.h"
 #include "esphome/core/log.h"
+#include "esphome/core/hal.h"
 #include <string.h>
 
 namespace esphome {
