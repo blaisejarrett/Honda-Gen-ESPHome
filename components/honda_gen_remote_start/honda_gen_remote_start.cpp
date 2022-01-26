@@ -27,6 +27,7 @@ void HondaGenRemoteStartComponent::loop() {
   if (this->starting_) {
     // should we depress the start button?
     if (this->start_button_down_ && (this->start_t_ + START_PRESS_TIME < millis())) {
+      ESP_LOGD(TAG, "Depress Starter.");
       this->start_output_->turn_off();
       this->start_button_down_ = false;
     }
@@ -66,9 +67,10 @@ void HondaGenRemoteStartComponent::loop() {
 }
 
 void HondaGenRemoteStartComponent::update() {
-  if (this->starting_ || this->stopping_)
+  if (this->starting_ || this->stopping_) {
     // leave the state handling to the loop routine.
     return;
+  }
   
   this->publish_state(this->running());
 }
@@ -86,14 +88,16 @@ bool HondaGenRemoteStartComponent::running() {
 }
 
 void HondaGenRemoteStartComponent::start_gen() {
-    if (!this->can_start())
+    if (!this->can_start()) {
         ESP_LOGD(TAG, "Cannot Start. Run sensor says its running or Power Sw says its off.");
         return;
+    }
 
     // must make sure the gen power is on.
     this->stop_output_->turn_off();
     
     // ask it to start. Depress the start button.
+    ESP_LOGD(TAG, "Starter Pressed.");
     this->start_output_->turn_on();
     this->start_button_down_ = true;
 
@@ -102,9 +106,10 @@ void HondaGenRemoteStartComponent::start_gen() {
 }
 
 void HondaGenRemoteStartComponent::stop_gen() {
-  if (!this->running())
+  if (!this->running()) {
     ESP_LOGD(TAG, "Cannot Stop. Sensors say gen is not running.");
     return;
+  }
   
   // ask it to stop.
   this->start_output_->turn_off();
@@ -115,11 +120,15 @@ void HondaGenRemoteStartComponent::stop_gen() {
 }
 
 void HondaGenRemoteStartComponent::write_state(bool state) {
-    if (state) {
-        this->start_gen();
-    } else {
-        this->stop_gen();
-    }
+  if (this->starting_ || this->stopping_) {
+    return;
+  }
+
+  if (state) {
+    this->start_gen();
+  } else {
+    this->stop_gen();
+  }
 }
 
 
