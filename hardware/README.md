@@ -7,12 +7,14 @@ The purpose of this device is to interface an esp32 with the DLC port and
 the remote start port. This project uses optical isolators between the 
 generator and the esp32 microcontroller.
 
+![pcb](docs/images/pcb_design.PNG?raw=true)
+
 ## Schematic
 The schematic for this project is available [here](schematic.pdf?raw=true).
 
 It's useful to reference the Honda Gen schematic aswell to understand how to wire
 the connectors:
-![honda schematic](docs/images/gen_schematic.PNG)
+![honda schematic](docs/images/gen_schematic.PNG?raw=true)
 
 ## The Remote Start Connector
 The remote start connector uses a [Sumitomo HM 6090-1021 Connector](https://prd.sws.co.jp/components/en/detail.php?number_s=60901021)

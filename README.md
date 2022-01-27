@@ -8,6 +8,11 @@ This project provides two Integrations. They can be used separately or together.
 
 ![EU7000is](docs/images/EU7000is_16HPE_03.png?raw=true)
 
+Addionally there is Open Source hardware available for use or for reference
+[Here](hardware/README.md)
+
+![PCB](hardware/docs/images/pcb_design.PNG)
+
 ## Remote Start
 
 ![Start Switch](docs/images/remote_start_switch.PNG?raw=true)
@@ -82,7 +87,7 @@ Some of the more useful ones:
 * Temperatures
 
 To use this you must provide a UART interface. There are some hardware considerations.
-I recommend you checkout this PCB project and schematic (TODO: Insert LINK) here.
+I recommend you check out the hardware portion of this project [here](hardware/README.md) for reference.
 
 **Implement a UART interface:**
 ```yaml
