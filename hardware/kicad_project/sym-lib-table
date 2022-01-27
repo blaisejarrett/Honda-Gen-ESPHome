@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name "esp32_mini")(type "KiCad")(uri "${KIPRJMOD}/libs/ESP32_mini/esp32_mini.kicad_sym")(options "")(descr ""))
+  (lib (name "eu7000is")(type "KiCad")(uri "${KIPRJMOD}/libs/EU700is/eu7000is.kicad_sym")(options "")(descr ""))
+  (lib (name "misc_parts")(type "KiCad")(uri "${KIPRJMOD}/libs/misc/misc_parts.kicad_sym")(options "")(descr ""))
+)
